@@ -1,0 +1,34 @@
+{
+  "name": "@asefux/module-template",
+  "version": "0.1.0",
+  "description": "",
+  "homepage": "https://github.com/asefux/common#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asefux/common.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint . --ext .js",
+    "lint:fix": "./node_modules/.bin/eslint . --ext .js --fix",
+    "test": "jest --passWithNoTests"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "eslint": "^7.1.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "husky": "^4.2.5",
+    "jest": "^26.0.1"
+  },
+  "dependencies": {
+    "@asefux/common": "^1.4.0-a1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test && npm run lint"
+    }
+  }
+}
