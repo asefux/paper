@@ -23,7 +23,11 @@
     "jest": "^26.0.1"
   },
   "dependencies": {
-    "@asefux/common": "^1.4.0-a1"
+    "@asefux/common": "^1.4.0-a1",
+    "ipfs": "^0.46.0",
+    "orbit-db": "^0.24.1",
+    "orbit-db-identity-provider": "^0.3.0",
+    "orbit-db-keystore": "^0.3.4"
   },
   "husky": {
     "hooks": {
