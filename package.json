@@ -2,10 +2,13 @@
   "name": "@asefux/module-template",
   "version": "0.1.0",
   "description": "",
-  "homepage": "https://github.com/asefux/common#readme",
+  "homepage": "https://github.com/asefux/paper#readme",
+  "keywords": [
+    "paper book"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/asefux/common.git"
+    "url": "https://github.com/asefux/paper.git"
   },
   "main": "index.js",
   "scripts": {
