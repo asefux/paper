@@ -1,4 +1,4 @@
-const { R, bn, object: { flatten, unflatten } } = require('@asefux/common');
+const { R, bn } = require('@asefux/common');
 const processors = require('./processors');
 
 
@@ -17,14 +17,14 @@ const processLogs = (currentValue, rawentry) => {
         rawentry.type]);
     }
   }
-
+  // eslint-disable-next-line no-unused-vars
   const [timestamp, type, ...args] = log;
   if (!processors[type]) {
-    console.log(`unknown ${type}`);
+    //    console.log(`unknown ${type}`);
     return currentValue;
   }
   if (typeof (processors[type].argc) !== 'undefined' && processors[type].argc !== args.length) {
-    console.error(`log ${timestamp} skipped: ${type} called with wrong number of arguments`);
+    //    console.error(`log ${timestamp} skipped: ${type} called with wrong number of arguments`);
     return currentValue;
   }
   return processors[type].call(this, currentValue, ...args);
@@ -55,12 +55,13 @@ class Book {
 
   value(showAccounts = false) {
     const components = this.valueComponents();
-    const settings = components.settings || {};
+    //    const settings = components.settings || {};
     const accounts = R.dissoc('pairs', R.dissoc('settings', components));
 
     if (showAccounts) {
       return accounts;
     }
+    // eslint-disable-next-line no-unused-vars
     return Object.entries(accounts).reduce((assetMatrix, [holder, assets]) => Object.entries(assets).reduce((resultAsset, [asset, value]) => {
       if (!resultAsset[asset]) {
         return {

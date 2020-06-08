@@ -5,6 +5,7 @@ module.exports = {
     'no-tabs': 0,
     'import/no-unresolved': 1,
     camelcase: 0,
+    'max-len': [2, 180, 2, { ignoreTemplateLiterals: true, ignoreStrings: true }],
   },
   env: {
     mocha: true,
