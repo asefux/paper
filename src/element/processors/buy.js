@@ -1,27 +1,36 @@
 const { bn } = require('@asefux/common');
+
+const change = require('./change');
+
 const make = require('./make');
 
-module.exports = make(['base.holder', 'base,asset', 'base.amount', 'quote.holder', 'quote.asset', 'quote.amount'],
-  (scope, baseHolder, baseAsset, baseAmount, quoteHolder, quoteAsset, quoteAmount) => (
-    baseHolder !== quoteHolder ? ({
-      ...scope,
-      [baseHolder]: {
-        ...(scope[baseHolder] || {}),
-        [baseAsset]: ((scope[baseHolder] || {})[baseAsset] || bn(0)).plus(baseAmount),
-        [quoteAsset]: ((scope[quoteHolder] || {})[quoteAsset] || bn(0)).minus(quoteAmount),
+module.exports = make(['base.holder', 'base.asset', 'base.amount', 'quote.holder', 'quote.asset', 'quote.amount'],
+  (scope, baseHolder, baseAsset, baseAmount, quoteHolder, quoteAsset, quoteAmount) => {
+    const changeScope = change(scope, quoteHolder, quoteAsset, quoteAmount, baseHolder, baseAsset, baseAmount);
+    const pair = `${baseAsset}/${quoteAsset}`;
+    const pairsScope = changeScope.pairs || {};
+    const currentPairScope = pairsScope[pair] || {
+      buy: {
+        volume: bn(0),
+        cost: bn(0),
       },
-      [quoteHolder]: {
-        ...(scope[quoteHolder] || {}),
-        [quoteAsset]: ((scope[quoteHolder] || {})[quoteAsset] || bn(0)).plus(quoteAmount),
-        [baseAsset]: ((scope[quoteHolder] || {})[baseAsset] || bn(0)).minus(baseAmount),
+      sell: {
+        volume: bn(0),
+        cost: bn(0),
       },
-    })
-      : ({
-        ...scope,
-        [baseHolder]: {
-          ...(scope[baseHolder] || {}),
-          [baseAsset]: ((scope[baseHolder] || {})[baseAsset] || bn(0)).plus(baseAmount),
-          [quoteAsset]: ((scope[baseHolder] || {})[quoteAsset] || bn(0)).minus(quoteAmount),
+    };
+
+    return ({
+      ...changeScope,
+      pairs: {
+        ...pairsScope,
+        [pair]: {
+          ...currentPairScope,
+          buy: {
+            volume: currentPairScope.buy.volume.plus(baseAmount),
+            cost: currentPairScope.buy.cost.plus(quoteAmount),
+          },
         },
-      })
-  ));
+      },
+    });
+  });
