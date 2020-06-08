@@ -50,10 +50,13 @@ class Book {
     return this.cachedValue;
   }
 
-  value() {
+  value(showAccounts = false) {
     const components = this.valueComponents();
     const settings = components.settings || {};
     const accounts = R.dissoc('settings', components);
+    if (showAccounts) {
+      return accounts;
+    }
     return Object.entries(accounts).reduce((assetMatrix, [holder, assets]) => Object.entries(assets).reduce((resultAsset, [asset, value]) => {
       if (!resultAsset[asset]) {
         return {
@@ -68,8 +71,17 @@ class Book {
     }, assetMatrix), {});
   }
 
-  pValue() {
-    const value = this.value();
+  pValue(showAccounts = false) {
+    const value = this.value(showAccounts);
+    if (showAccounts) {
+      return Object.entries(value).reduce((result, [holder, values]) => ({
+        ...result,
+        [holder]: Object.entries(values).reduce((r, [asset, v]) => ({
+          ...r,
+          [asset]: bn(v).toFixed(8),
+        }), result[holder] || {}),
+      }), {});
+    }
     return Object.entries(value).reduce((result, [asset, amount]) => ({
       ...result,
       [asset]: bn(amount).toFixed(8),
