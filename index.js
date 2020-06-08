@@ -1,5 +1,5 @@
-const common = require('@asefux/common');
+const Book = require('./src/element/book');
 
-
-
-module.exports = { common };
+module.exports = {
+  Book,
+};
